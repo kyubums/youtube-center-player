@@ -60,7 +60,7 @@ $(function() {
       data: { id: id },
       success: function(response) {
         alert(response);
-        refresh();
+        setTimeout(refresh, 1000);
       },
       error: function(err) {
         alert(err.responseText);
