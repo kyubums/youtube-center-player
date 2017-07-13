@@ -43,8 +43,8 @@ $(function() {
       url: '/music',
       method: 'post',
       data: { playId: playId },
-      success: function() {
-        alert('등록되었습니다.');
+      success: function(response) {
+        alert(response);
       },
       error: function(err) {
         alert(err.responseText);
@@ -60,6 +60,7 @@ $(function() {
       data: { id: id },
       success: function(response) {
         alert(response);
+        refresh();
       },
       error: function(err) {
         alert(err.responseText);
