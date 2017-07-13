@@ -17,6 +17,9 @@ const MusicList = database.define('MusicList', {
   thumbnailUrl: {
     type: Sequelize.STRING,
   },
+  duration: {
+    type: Sequelize.STRING,
+  },
   state: {
     type: Sequelize.ENUM('READY', 'PLAYED'),
     defaultValue: 'READY',

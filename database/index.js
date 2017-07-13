@@ -10,6 +10,7 @@ const sequelize = new Sequelize({
   },
 
   storage: './database/music.sqlite',
+  logging: false,
 });
 
 module.exports = sequelize;

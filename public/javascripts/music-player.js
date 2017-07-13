@@ -1,3 +1,5 @@
+$.ajaxSetup({cache:false});
+
 function refresh() {
   $.ajax({
     url: '/music',
@@ -7,8 +9,8 @@ function refresh() {
       var musicList = response.musicList;
 
       var currentId = $('#current .vote').data('id');
-      if (!currentId || currentId !== current.id) {
-        $('#current .title').text(current.title);
+      if (current.id && (!currentId || currentId !== current.id)) {
+        $('#current .title').text('['+current.duration+']'+current.title);
         $('#current .description').text(current.description);
         $('#current .thumbnail').attr('src', current.thumbnailUrl);
         $('#current .vote').data('id', current.id);
@@ -23,7 +25,7 @@ function refresh() {
       ) return;
       list.empty();
       musicList.map(function(music) {
-        list.append('<li data-id="' + music.id + '">' + music.title + '</li>');
+        list.append('<li data-id="' + music.id + '">[' + music.duration + ']' + music.title + '</li>');
       });
     },
     error: function(err) {
@@ -54,13 +56,20 @@ $(function() {
 
   $('#current .vote').click(function() {
     var id = $(this).data('id');
+    var voted = readCookie('vote');
+    if (voted === id.toString()) {
+      alert('이미 투표 했습니다!');
+      return;
+    }
+    // 어뷰징 하지 마세요 ㅜㅜ
     $.ajax({
       url: '/music/vote',
       method: 'post',
       data: { id: id },
       success: function(response) {
+        createCookie('vote', id);
         alert(response);
-        setTimeout(refresh, 1000);
+        refresh();
       },
       error: function(err) {
         alert(err.responseText);
