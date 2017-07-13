@@ -1,0 +1,5 @@
+node_modules
+.ftpignore
+.ftpconfig
+.DS_Store
+database/*.sqlite

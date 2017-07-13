@@ -1,0 +1,88 @@
+body {
+  padding: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#content {
+  float: left;
+  width: 300px;
+  border: 1px solid #ebedec;
+  padding: 10px;
+}
+
+#content h3 {
+  font-style: italic;
+}
+
+#current {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+#current .thumbnail{
+  float: left;
+  width: 50px;
+  height: 50px;
+}
+
+#current .info {
+  float: left;
+  width: 230px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+#current::after {
+  display: block;
+  clear: both;
+  content: ' ';
+}
+
+#current .info .title {
+  color: #808080;
+  font-size: 14px;
+}
+
+#current .info .description {
+  color: #adabac;
+  font-size: 12px;
+  max-height: 80px;
+  overflow: scroll;
+}
+
+input#playId {
+  width: 240px;
+}
+
+#playlist {
+  float: left;
+  width: 200px;
+  height: 350px;
+  border: 1px solid #ebedec;
+  padding: 10px;
+}
+
+#playlist ul {
+  width: 188px;
+  height: 280px;
+  border: 1px solid #ebedec;
+  list-style: none;
+  padding: 5px;
+  overflow: hidden;
+  scoll: auto;
+}
+
+#playlist li {
+  line-height: 22px;
+  height: 22px;
+  overflow: hidden;
+}
+
+#guide {
+  margin-top: 10px;
+  width: 100%;
+}
