@@ -14,6 +14,10 @@ function refresh() {
         $('#current .description').text(current.description);
         $('#current .thumbnail').attr('src', current.thumbnailUrl);
         $('#current .vote').data('id', current.id);
+      } else if (!current.id) {
+        $('#current .title').text('NO MUSIC PLAYING NOW');
+        $('#current .description').text('');
+        $('#current .thumbnail').attr('src', '');
       }
 
       var list = $('#playlist ul');
