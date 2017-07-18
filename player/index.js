@@ -74,8 +74,8 @@ const player = {
       .then((music) => {
         if (!music) throw new Error('NO_MUSIC');
 
-        const { id, title, description, thumbnailUrl } = music;
-        Object.assign(currentMusic, { id, title, description, thumbnailUrl });
+        const { id, title, description, thumbnailUrl, duration } = music;
+        Object.assign(currentMusic, { id, title, description, thumbnailUrl, duration });
         return music.update({ state: 'PLAYED' });
       })
       .then((music) => {
@@ -84,7 +84,7 @@ const player = {
         console.log('PLAY_SUCCESS');
       })
       .catch((err) => {
-        Object.assign(currentMusic, { id: null, title: null, description: null, thumbnailUrl: null });
+        Object.assign(currentMusic, { id: null, title: null, description: null, thumbnailUrl: null, duration: null });
         console.log(err.message);
       });
   },
