@@ -1,12 +1,14 @@
 const Stream = require('youtube-audio-stream');
 const Decoder = require('lame').Decoder;
 const Speaker = require('speaker');
+const Volume = require('pcm-volume');
 
 const MusicList = require('../database/models/musicList');
 const currentMusic = require('../object/currentMusic');
 
 let playStream = null;
 let decoder = Decoder();
+let volume = Volume();
 let speaker = Speaker();
 let worker = null;
 
@@ -36,8 +38,10 @@ const player = {
           player.next();
         }, 1000)
       });
+      volume.setVolume(currentMusic.volume);
 
       playStream.pipe(decoder)
+      .pipe(volume)
       .pipe(speaker);
 
       return true;
@@ -61,6 +65,7 @@ const player = {
     playStream.end();
 
     decoder = Decoder();
+    volume = Volume();
     speaker = Speaker();
   },
   next() {
@@ -83,6 +88,14 @@ const player = {
         console.log(err.message);
       });
   },
+  setVolume(v) {
+    if (v > 1 || v < 0) {
+      return false;
+    }
+
+    volume.setVolume(v);
+    return true;
+  }
 }
 
 module.exports = player;

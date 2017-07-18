@@ -20,7 +20,6 @@ a {
 
 #current {
   position: relative;
-  margin-bottom: 10px;
 }
 
 #current .thumbnail{
@@ -51,7 +50,7 @@ a {
   color: #adabac;
   font-size: 12px;
   max-height: 80px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 input#playId {
@@ -85,4 +84,17 @@ input#playId {
 #guide {
   margin-top: 10px;
   width: 100%;
+}
+
+#volume-control img {
+  position: relative;
+  top: 5px;
+  margin-right: 10px;
+}
+
+#volume-control #volume {
+  position: relative;
+  top: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
 }

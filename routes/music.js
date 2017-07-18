@@ -70,4 +70,13 @@ router.post('/vote', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/volume', (req, res, next) => {
+  const { v } = req.body;
+  if (!player.setVolume(v)) {
+    return next(new Error('INVALID VOLUME'));
+  }
+  currentMusic.volume = v;
+  res.send('volume changed');
+});
+
 module.exports = router;
