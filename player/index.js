@@ -33,12 +33,15 @@ const player = {
     try {
       playStream = Stream(BASE_URL + id);
 
-      playStream.on('finish', () => {
+      speaker.on('finish', () => {
         setTimeout(() => {
           player.next();
         }, 1000)
       });
-      volume.setVolume(currentMusic.volume);
+
+      setTimeout(() => {
+        player.setVolume(currentMusic.volume);
+      }, 500);
 
       playStream.pipe(decoder)
       .pipe(volume)
