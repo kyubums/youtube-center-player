@@ -28,6 +28,7 @@ router.post('/', (req, res, next) => {
 
   youtube.getById(playId, (err, result) => {
     if (err || !result || !result.items[0]) {
+      console.log(err);
       next(new Error('VIDEO NOT FOUND'));
     } else {
       const { id, snippet, contentDetails } = result.items[0];
