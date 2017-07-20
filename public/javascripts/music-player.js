@@ -20,6 +20,7 @@ function refresh() {
         $('#current .thumbnail').attr('src', '');
       }
 
+      $('#volume').val(current.volume);
       var list = $('#playlist ul');
       var newFirst = musicList[0] || {};
       var newLast = musicList[musicList.length - 1] || {};
@@ -80,5 +81,21 @@ $(function() {
         console.log(err);
       },
     })
-  })
+  });
+
+  $('#volume').change(function() {
+    var v = $(this).val();
+    $.ajax({
+      url: '/music/volume',
+      method: 'post',
+      data: { v: v },
+      success: function(response) {
+        setTimeout(refresh, 500);
+      },
+      error: function(err) {
+        alert(err.responseText);
+        console.log(err);
+      }
+    })
+  });
 });

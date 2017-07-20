@@ -28,6 +28,7 @@ router.post('/', (req, res, next) => {
 
   youtube.getById(playId, (err, result) => {
     if (err || !result || !result.items[0]) {
+      console.log(err);
       next(new Error('VIDEO NOT FOUND'));
     } else {
       const { id, snippet, contentDetails } = result.items[0];
@@ -77,6 +78,15 @@ router.post('/vote', (req, res, next) => {
       }
     })
     .catch(next);
+});
+
+router.post('/volume', (req, res, next) => {
+  const { v } = req.body;
+  if (!player.setVolume(v)) {
+    return next(new Error('INVALID VOLUME'));
+  }
+  currentMusic.volume = v;
+  res.send('volume changed');
 });
 
 module.exports = router;

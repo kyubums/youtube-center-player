@@ -3,4 +3,5 @@ module.export = {
   title: '',
   description: '',
   thumbnailUrl: '',
+  volume: 1,
 }
