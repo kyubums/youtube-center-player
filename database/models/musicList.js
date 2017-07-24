@@ -10,10 +10,6 @@ const MusicList = database.define('MusicList', {
     type: Sequelize.STRING,
     defaultValue: '제목없음',
   },
-  description: {
-    type: Sequelize.STRING,
-    defaultValue: '설명없음',
-  },
   thumbnailUrl: {
     type: Sequelize.STRING,
   },
@@ -26,9 +22,16 @@ const MusicList = database.define('MusicList', {
   },
   kickVote: {
     type: Sequelize.INTEGER,
-    allowNull: false,
     defaultValue: 0,
   },
+  comment: {
+    type: Sequelize.STRING,
+    defaultValue: '코멘트없음',
+  },
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  }
 }, {
   defaultScope: {
     where: {

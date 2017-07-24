@@ -1,0 +1,13 @@
+#searchLayout
+  #searchContainer
+    img#close(src="images/ico-close.png", width="30", height="30")
+    form#searchWrapper
+      table
+        row
+          td(width="100%")
+            input#searchText(type="text", placeholder="검색어를 입력 해 주세요")
+          td
+            button#searchBtn(type="submit", value="검색")
+              img(src="/images/ico-search.png")
+    ul#searchResult
+      img#loader(width="50", height="50", src="/images/loading.gif")

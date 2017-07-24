@@ -11,7 +11,7 @@ function refresh() {
       var currentId = $('#current .vote').data('id');
       if (current.id && (!currentId || currentId !== current.id)) {
         $('#current .title').text('['+current.duration+']'+current.title);
-        $('#current .description').text(current.description);
+        $('#current .description').text('등록 : ' + current.username);
         $('#current .thumbnail').attr('src', current.thumbnailUrl);
         $('#current .vote').data('id', current.id);
       } else if (!current.id) {
@@ -30,7 +30,7 @@ function refresh() {
       ) return;
       list.empty();
       musicList.map(function(music) {
-        list.append('<li data-id="' + music.id + '">[' + music.duration + ']' + music.title + '</li>');
+        list.append('<li data-id="' + music.id + '">[' + music.duration + ']' + music.username + '_' + music.title + '</li>');
       });
     },
     error: function(err) {
@@ -40,16 +40,23 @@ function refresh() {
 }
 
 $(function() {
+  var username = readCookie('username');
+  if (!username) {
+    location.href = '/';
+  }
+
   refresh();
   setInterval(refresh, 5000);
 
-  $('#addMusic').click(function() {
-    var playId = $('#playId').val();
-    $('#playId').val('');
+  $('body').on('click', '.addMusic', function() {
+    if(!confirm('등록하시겠습니까?')) {
+      return false;
+    }
+    var playId = $(this).parent().data('id');
     $.ajax({
       url: '/music',
       method: 'post',
-      data: { playId: playId },
+      data: { playId: playId, username: username },
       success: function(response) {
         alert(response);
       },
@@ -62,6 +69,10 @@ $(function() {
   $('#current .vote').click(function() {
     var id = $(this).data('id');
     var voted = readCookie('vote');
+    if (!id) {
+      alert('재생중인 음악이 없습니다.');
+      return;
+    }
     if (voted === id.toString()) {
       alert('이미 투표 했습니다!');
       return;

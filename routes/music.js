@@ -1,13 +1,11 @@
+const _ = require('lodash');
 const express = require('express');
 const moment = require('moment');
-const YouTube = require('youtube-node');
 const Sequelize = require('sequelize');
 const MusicList = require('../database/models/musicList');
 const currentMusic = require('../object/currentMusic');
+const YouTube = require('../youtube');
 const player = require('../player');
-
-var youtube = new YouTube();
-youtube.setKey('AIzaSyA5eSgE-MJstvXLOXclivfQvSAEcnoCWws');
 
 const router = express.Router();
 
@@ -23,42 +21,48 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const { playId } = req.body;
-  const MAX_DURATION = 1000 * 60 * 30; // 넉넉하게 30분 까지
+  const { playId, comment, username } = req.body;
+  const MAX_DURATION = 1000 * 60 * 60; // 넉넉하게 1시간 까지
 
-  youtube.getById(playId, (err, result) => {
-    if (err || !result || !result.items[0]) {
-      console.log(err);
-      next(new Error('VIDEO NOT FOUND'));
-    } else {
-      const { id, snippet, contentDetails } = result.items[0];
-      const { title, description, thumbnails, liveBroadcastContent } = snippet;
-      const duration = moment.duration(contentDetails.duration);
-      if (duration.valueOf() > MAX_DURATION) next(new Error('MUSIC TOO LONG'));
-      else if (liveBroadcastContent !== 'none') next(new Error('LIVE NOT ALLOWED'));
-      else {
-        const durationText = duration.get('hours') + ':'
-          + duration.get('minutes') + ':'
-          + duration.get('seconds');
-        MusicList.create({
-          playId: id,
-          title,
-          description,
-          thumbnailUrl: thumbnails.default.url,
-          duration: durationText,
-        })
-        .then(({ title }) => {
-          res.send(title + ' 이 등록되었습니다.');
-        })
-        .catch(next);
-      }
-    }
-  });
+  YouTube.getById(playId)
+    .then(_.head)
+    .then((video) => {
+      const { id, title, channelTitle, thumbnails, isLive, duration, durationText } = video;
+      if (duration > MAX_DURATION) throw new Error('MUSIC TOO LONG');
+      if (isLive) throw new Error('LIVE NOT ALLOWED');
+
+      return MusicList.create({
+        playId: id,
+        title,
+        thumbnailUrl: thumbnails.default.url,
+        duration: durationText,
+        comment,
+        username,
+      });
+    })
+    .then(({ title }) => {
+      res.send(title + ' 이 등록되었습니다.');
+    })
+    .catch(next);
+});
+
+router.get('/search/:searchText', (req, res, next) => {
+  const { searchText } = req.params;
+  const numResult = 10;
+  const option = {};
+  if (req.query.page) {
+    option.pageToken = req.query.page;
+  }
+  YouTube.search(searchText, option)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch(next);
 });
 
 router.post('/vote', (req, res, next) => {
   const { id } = req.body;
-  const VOTE_MAX = 10;
+  const VOTE_MAX = 4;
 
   MusicList.scope('current')
     .findById(id)

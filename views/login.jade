@@ -1,0 +1,22 @@
+html
+  body
+    h3 유튭플레이어 by.chef
+    block content
+      input#username(type="text", placeholder="닉네임을 입력 해 주세요")
+      input#login(type="submit", value="로그인")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+    script(src='/javascripts/cookie.js')
+    script.
+      _self = window.open('', '_self', '');
+      $(function(){
+        $('#login').click(function(){
+          var username = $('#username').val();
+          if (!username) {
+            alert('닉네임을 입력 해 주세요');
+            return;
+          }
+          createCookie('username', username);
+          window.open('/player', 'player', 'width=370,height=520,location=no,resizable=no,toolbar=no');
+          $('body').text('창을 닫아주세요');
+        });
+      });
