@@ -228,10 +228,10 @@ input#playId {
   margin-bottom: 5px;
 }
 
-#searchResult #loader {
+#loader {
   display: none;
   position: absolute;
   left: 50%;
-  top: 120px;
+  top: 150px;
   margin-left: -25px;
 }
