@@ -33,26 +33,20 @@ const player = {
     try {
       playStream = Stream(BASE_URL + id);
 
-      speaker.on('finish', () => {
-        setTimeout(() => {
-          player.next();
-        }, 1000)
+      speaker.on('finish', player.next);
+
+      volume.on('pipe', () => {
+        player.setVolume(currentMusic.volume);
       });
 
-      setTimeout(() => {
-        player.setVolume(currentMusic.volume);
-      }, 500);
-
       playStream.pipe(decoder)
-      .pipe(volume)
-      .pipe(speaker);
+        .pipe(volume)
+        .pipe(speaker);
 
       return true;
     } catch (e) {
       console.log(e);
-      setTimeout(() => {
-        player.next();
-      }, 1000)
+      player.next();
       return false;
     }
   },
@@ -60,6 +54,7 @@ const player = {
     if (!playStream) {
       return;
     }
+    speaker.removeListener('finish', player.next);
 
     playStream.unpipe(speaker);
     playStream.unpipe(decoder);
@@ -72,8 +67,9 @@ const player = {
     speaker = Speaker();
   },
   next() {
-    player.stop();
-    MusicList.findOne()
+    setTimeout(() => {
+      player.stop();
+      MusicList.findOne()
       .then((music) => {
         if (!music) throw new Error('NO_MUSIC');
 
@@ -90,6 +86,7 @@ const player = {
         Object.assign(currentMusic, { id: null, title: null, username: null, thumbnailUrl: null, duration: null });
         console.log(err.message);
       });
+    }, 1000);
   },
   setVolume(v) {
     if (v > 1 || v < 0) {
