@@ -3,8 +3,10 @@ const moment = require('moment');
 const YouTube = require('youtube-node');
 const Promise = require('bluebird');
 
+const config = require('./config.json');
+
 const youtube = new YouTube();
-youtube.setKey('AIzaSyA5eSgE-MJstvXLOXclivfQvSAEcnoCWws');
+youtube.setKey(config.youtube_api_key);
 
 const getById = (videoId) => {
   return new Promise((resolve, reject) => {

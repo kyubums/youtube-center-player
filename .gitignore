@@ -3,3 +3,4 @@ node_modules
 .ftpconfig
 .DS_Store
 database/*.sqlite
+config.json
